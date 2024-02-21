@@ -5,7 +5,7 @@ import javax.swing.*;
  */
 public class Zombie {
 
-    private int health = 1000;
+    private int health = 10;
     private int speed = 1;
 
     private GamePanel gp;

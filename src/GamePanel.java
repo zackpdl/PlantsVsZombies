@@ -7,10 +7,11 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by Armin on 6/25/2016.
- */
+
+
 public class GamePanel extends JLayeredPane implements MouseMotionListener {
+	
+    private JLabel zombiesDiedLabel;
 
     private Image bgImage;
     private Image peashooterImage;
@@ -32,6 +33,22 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     private Timer sunProducer;
     private Timer zombieProducer;
     private JLabel sunScoreboard;
+    private int totalZombiesDied = 0;
+    
+    //Zombie died method
+    
+    public void zombieDied() {
+        totalZombiesDied++;
+        System.out.println("Total zombies died: " + totalZombiesDied);
+        updateZombiesDiedLabel();
+    }
+
+    // Add this method to update the label on the screen
+    public void updateZombiesDiedLabel() {
+        zombiesDiedLabel.setText("Zombies Died: " + totalZombiesDied);
+    }
+
+
 
     private GameWindow.PlantType activePlantingBrush = GameWindow.PlantType.None;
 
@@ -53,16 +70,14 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         setLayout(null);
         addMouseMotionListener(this);
         this.sunScoreboard = sunScoreboard;
-        setSunScore(150);  //pool avalie
+        setSunScore(150);
 
         bgImage = new ImageIcon(this.getClass().getResource("images/mainBG.png")).getImage();
-
         peashooterImage = new ImageIcon(this.getClass().getResource("images/plants/peashooter.gif")).getImage();
         freezePeashooterImage = new ImageIcon(this.getClass().getResource("images/plants/freezepeashooter.gif")).getImage();
         sunflowerImage = new ImageIcon(this.getClass().getResource("images/plants/sunflower.gif")).getImage();
         peaImage = new ImageIcon(this.getClass().getResource("images/pea.png")).getImage();
         freezePeaImage = new ImageIcon(this.getClass().getResource("images/freezepea.png")).getImage();
-
         normalZombieImage = new ImageIcon(this.getClass().getResource("images/zombies/zombie1.png")).getImage();
         coneHeadZombieImage = new ImageIcon(this.getClass().getResource("images/zombies/zombie2.png")).getImage();
 
@@ -88,6 +103,17 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
             colliders[i] = a;
             add(a, new Integer(0));
         }
+
+        // Zombies dead label
+        zombiesDiedLabel = new JLabel("Zombies Died: " + totalZombiesDied);
+        zombiesDiedLabel.setForeground(Color.BLACK);
+        zombiesDiedLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        zombiesDiedLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        zombiesDiedLabel.setBounds(780, 10, 200, 20);
+        add(zombiesDiedLabel);
+
+        // Other initialization code remains unchanged
+    
 
         //colliders[0].setPlant(new FreezePeashooter(this,0,0));
 /*
@@ -307,4 +333,8 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     public void setColliders(Collider[] colliders) {
         this.colliders = colliders;
     }
+ 
+
+
+    
 }

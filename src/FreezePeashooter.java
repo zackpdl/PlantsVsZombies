@@ -1,20 +1,23 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-/**
- * Created by Armin on 6/25/2016.
- */
 public class FreezePeashooter extends Plant {
 
     private Timer shootTimer;
-
+    private static final int SHOOT_RANGE = 400; // The range until the defender detects attacker
+    private int health;
 
     public FreezePeashooter(GamePanel parent, int x, int y) {
         super(parent, x, y);
-        shootTimer = new Timer(2000, (ActionEvent e) -> {
-            //System.out.println("SHOOT");
-            if (getGp().getLaneZombies().get(y).size() > 0) {
-                getGp().getLanePeas().get(y).add(new FreezePea(getGp(), y, 103 + this.getX() * 100));
+        this.health = 1000; // Set initial health value
+        shootTimer = new Timer(200, (ActionEvent e) -> {
+            // System.out.println("SHOOT");
+            for (Zombie zombie : getGp().getLaneZombies().get(y)) {
+                int zombieDistance = zombie.getPosX() - getX();
+                if (zombieDistance > 0 && zombieDistance < SHOOT_RANGE) {
+                    getGp().getLanePeas().get(y).add(new FreezePea(getGp(), y, 103 + this.getX() * 100));
+                    break; // Only shoot one pea for the closest zombie
+                }
             }
         });
         shootTimer.start();
@@ -25,4 +28,13 @@ public class FreezePeashooter extends Plant {
         shootTimer.stop();
     }
 
+    // Getter for health
+    public int getHealth() {
+        return health;
+    }
+
+    // Setter for health
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

@@ -4,6 +4,8 @@ import java.awt.*;
  * Created by Armin on 6/25/2016.
  */
 public class Pea {
+    private static int totalZombiesKilled = 0;
+
 
     private int posX;
     protected GamePanel gp;
@@ -28,6 +30,9 @@ public class Pea {
 
                     gp.getLaneZombies().get(myLane).remove(i);
                     GamePanel.setProgress(10);
+                    totalZombiesKilled++;  // Increment the total count
+                    gp.zombieDied();  // Call the method to update total zombie count
+
                     exit = true;
                 }
                 gp.getLaneZombies().get(myLane).remove(this);
@@ -54,5 +59,8 @@ public class Pea {
 
     public void setMyLane(int myLane) {
         this.myLane = myLane;
+    }
+    public static int getTotalZombiesKilled() {
+        return totalZombiesKilled;
     }
 }
